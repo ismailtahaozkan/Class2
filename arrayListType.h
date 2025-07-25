@@ -43,7 +43,7 @@ public:
     void remove(const elemType& removeItem);
       // Removes an item from the list
 
-    // Lab02 tasks: students implement these
+    // Lab02 methods fully implemented:
     void removeAll(const elemType& removeItem);
     elemType min() const;
     elemType max() const;
@@ -54,13 +54,13 @@ public:
     ~arrayListType();
 
 protected:
-    elemType *list;  // array to hold the list elements
-    int length;      // current number of elements
-    int maxSize;     // maximum capacity of the list
+    elemType *list;  // Array to hold list elements
+    int length;      // Current number of elements
+    int maxSize;     // Maximum capacity of the list
 };
 
 // -----------------------------------------------------------------------
-// Provided implementations: students should NOT modify
+// Implementations
 // -----------------------------------------------------------------------
 
 template <class elemType>
@@ -166,6 +166,19 @@ void arrayListType<elemType>::insertEnd(const elemType& insertItem)
 }
 
 template <class elemType>
+void arrayListType<elemType>::removeAt(int location)
+{
+    if (location < 0 || location >= length)
+        cerr << "Remove location out of range." << endl;
+    else
+    {
+        for (int i = location; i < length - 1; i++)
+            list[i] = list[i + 1];
+        length--;
+    }
+}
+
+template <class elemType>
 void arrayListType<elemType>::retrieveAt(int location, elemType& retItem) const
 {
     if (location < 0 || location >= length)
@@ -218,31 +231,41 @@ void arrayListType<elemType>::remove(const elemType& removeItem)
 }
 
 // -----------------------------------------------------------------------
-// Lab02 stubs — implement these methods
+// Lab02 methods implementations
 // -----------------------------------------------------------------------
-
-template <class elemType>
-void arrayListType<elemType>::removeAt(int location)
-{
-    // TODO: student implements removeAt using swap-with-last or shift
-}
 
 template <class elemType>
 void arrayListType<elemType>::removeAll(const elemType& removeItem)
 {
-    // TODO: student implements removeAll
+    int newLength = 0;
+    for (int i = 0; i < length; ++i) {
+        if (list[i] != removeItem) {
+            list[newLength++] = list[i];
+        }
+    }
+    length = newLength;
 }
 
 template <class elemType>
 elemType arrayListType<elemType>::min() const
 {
-    // TODO: student implements min
+    assert(length != 0);
+    elemType smallest = list[0];
+    for (int i = 1; i < length; ++i)
+        if (list[i] < smallest)
+            smallest = list[i];
+    return smallest;
 }
 
 template <class elemType>
 elemType arrayListType<elemType>::max() const
 {
-    // TODO: student implements max
+    assert(length != 0);
+    elemType largest = list[0];
+    for (int i = 1; i < length; ++i)
+        if (list[i] > largest)
+            largest = list[i];
+    return largest;
 }
 
 #endif // H_arrayListType
